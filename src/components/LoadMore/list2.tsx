@@ -16,8 +16,19 @@ const List2: ListComponents<{ value: string }> = ( { items } ) =>
     )
 }
 
+const List2Get = (page:number) =>{
+    return Promise.resolve([
+       { value: "11" },
+       { value: "12" },
+       { value: "13" },
+       { value: "14" },
+       { value: "15" },
+    ])
+}
+
 export
 {
     Item2,
-    List2
+    List2,
+    List2Get
 }
