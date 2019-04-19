@@ -58,6 +58,7 @@ const LoadMore2ComponentsDemo2 = withLoadMore(List2,List2Get);
 
 export {
     LoadMore1ComponentsDemo2,
-    LoadMore2ComponentsDemo2
+    LoadMore2ComponentsDemo2,
+    withLoadMore
 }
 

@@ -2,13 +2,21 @@ import * as React from 'react';
 import './App.css';
 
 // import { FCComponents } from './components/FC';
-import { List } from './components/LoadMore/list';
+import { List,ListGet } from './components/LoadMore/list';
 import { List2 } from './components/LoadMore/list2';
 
 import { LoadMoreList1Component,LoadMoreList2Component} from './components/LoadMore/demo01-1';
 
-import { LoadMore1ComponentsDemo2,LoadMore2ComponentsDemo2} from './components/LoadMore/demo02'
+import { LoadMore1ComponentsDemo2,LoadMore2ComponentsDemo2,withLoadMore} from './components/LoadMore/demo02'
 
+
+// with curry
+
+import {_curry} from './utils/curry';
+
+const CurryLoadMore1 = _curry(withLoadMore,List)
+
+const CurryLoadMore1Components = CurryLoadMore1(ListGet)
 
 
 class App extends React.Component<{}, { count: number }> {
@@ -45,6 +53,8 @@ class App extends React.Component<{}, { count: number }> {
                 />
                 <LoadMore1ComponentsDemo2 />
                 <LoadMore2ComponentsDemo2 />
+                <div> load Curry Componnets</div>
+                <CurryLoadMore1Components />
             </div>
         );
     }
