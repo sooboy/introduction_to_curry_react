@@ -1,46 +1,51 @@
 import * as React from 'react';
 
-import { List } from './list';
+// import { Item, List } from './list';
+// import { Item2 } from './list2';
+import { ListComponents } from './interface';
 
 // const LoadMore =()
 
-interface loadMoreProps
+interface loadMoreProps<T>
 {
-    fn: ( page: number ) => Promise<{ text: string }[]>
+    fn: ( page: number ) => Promise<T[]>
+    component: ListComponents<T>
 }
 
-interface loadMoreState
+interface loadMoreState<T>
 {
-    items: { text: string }[]
+    items: T[]
 }
 
-class LoadMore extends React.Component<loadMoreProps, loadMoreState>
+class LoadMore<T> extends React.Component<loadMoreProps<T>, loadMoreState<T>>
 {
     private _count = 0;
 
-    constructor ( props: loadMoreProps )
+    constructor ( props: loadMoreProps<T> )
     {
         super( props );
-        this.state={
-            items:[]
+        this.state = {
+            items: []
         }
     }
-    async componentWillMount(){
-        console.log("will Mount")
+    async componentWillMount ()
+    {
+        console.log( "will Mount" )
         await this.load()
-        console.log("will Mount over")
+        console.log( "will Mount over" )
 
     }
     private async load ()
     {
         ++this._count;
-        const rest = await this.props.fn(this._count);
-        this.setState({
-            items: this.state.items.concat(rest)
-        })
+        const rest = await this.props.fn( this._count );
+        this.setState( {
+            items: this.state.items.concat( rest )
+        } )
     }
     render ()
     {
+        const List = this.props.component
         return (
             <div>
                 <List
@@ -55,7 +60,26 @@ class LoadMore extends React.Component<loadMoreProps, loadMoreState>
     }
 }
 
+
+// const OneList: React.FC = () =>
+// {
+//     return (
+//         <div>
+//             <List1More 
+//                 component={List}
+
+//                 fn={}
+//             />
+//         </div>
+//     )
+// }
+
+type LoadMoreType<T> = new() => LoadMore<T>
+
+
 export
 {
-    LoadMore
+    LoadMore,
+    // List1More
+    LoadMoreType
 }
