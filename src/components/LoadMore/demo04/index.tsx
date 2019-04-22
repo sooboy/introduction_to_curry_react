@@ -1,21 +1,25 @@
 import * as React from 'react';
 import { ListComponents } from '../interface';
 
-import { List,ListGet} from '../list';
-import { List2,List2Get} from '../list2';
+import { List } from '../list';
+import { List2 } from '../list2';
+import Btn from '../Btn';
+import Btn2 from '../Btn2';
 
 
-type loadMoreFn<T> = (page:number)=> Promise<T[]>;
-interface LoadMoreProps<T> {
-    fn?:loadMoreFn<T>
-}
+type loadMoreFn<T> = ( page: number ) => Promise<T[]>;
 
-const withLoadMore = <T extends any> ( List: ListComponents<T>, fn?: loadMoreFn<T> ) =>
+const withLoadMore = <T extends any> ( List: ListComponents<T>, Btn: React.ComponentType, fn?: loadMoreFn<T> ) =>
 {
     interface loadMoreState<T>
     {
         items: T[]
     }
+    interface LoadMoreProps<T>
+    {
+        fn?: loadMoreFn<T>
+    }
+
     return class extends React.Component<LoadMoreProps<T>, loadMoreState<T>>{
         private _count = 0;
 
@@ -29,8 +33,8 @@ const withLoadMore = <T extends any> ( List: ListComponents<T>, fn?: loadMoreFn<
         private async load ()
         {
             ++this._count;
-            const fns = this.props.fn || fn 
-            if(!fns) return ;
+            const fns = this.props.fn || fn
+            if ( !fns ) return;
             const rest = await fns( this._count );
             this.setState( {
                 items: this.state.items.concat( rest )
@@ -42,7 +46,7 @@ const withLoadMore = <T extends any> ( List: ListComponents<T>, fn?: loadMoreFn<
         }
         render ()
         {
-            
+
             return (
                 <div>
                     <List
@@ -50,20 +54,21 @@ const withLoadMore = <T extends any> ( List: ListComponents<T>, fn?: loadMoreFn<
                     />
 
                     <div onClick={ () => { this.load() } } className="loadMoreBtn">
-                        load more
-                </div>
+                        <Btn />
+                    </div>
                 </div>
             )
         }
     }
 }
 
-const LoadMore1ComponentsDemo3 = withLoadMore(List,ListGet);
-const LoadMore2ComponentsDemo3 = withLoadMore(List2,List2Get);
+const LoadMore1ComponentsDemo4 = withLoadMore( List, Btn );
+const LoadMore2ComponentsDemo4 = withLoadMore( List2, Btn2 );
 
-export {
-    LoadMore1ComponentsDemo3,
-    LoadMore2ComponentsDemo3,
+export
+{
+    LoadMore1ComponentsDemo4,
+    LoadMore2ComponentsDemo4,
     withLoadMore
 }
 
